@@ -22,13 +22,13 @@ def start_test(request,id):
     exam_type = TypeOfExam.objects.get(id=id)
     pk = ExamCategory.objects.get(id=exam_type.category.id)
     print(pk)
-    ans =[]
+    dic ={}
     questions = Questions.objects.filter(type_of_exam = pk)
     for i in questions:
 
-        ans.append( Answer.objects.filter(question=i))
-    
-
+        answers = Answer.objects.filter(question=i)
+        dic[i] = answers
+    print(dic)
     
     print(questions)
     answers = Answer.objects.filter(question__in=questions)
@@ -36,6 +36,6 @@ def start_test(request,id):
     context = {
         'questions':questions,
         'answers':answers,
-        'ans':ans
+        
     }
-    return render(request,'user_side/test.html',context)
+    return render(request,'user_side/start.html',context,{'dic':dic})
